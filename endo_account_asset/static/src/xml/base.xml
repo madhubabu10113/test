@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- vim:fdl=1:
+-->
+<templates id="template" xml:space="preserve">
+
+<t t-name="ViewManagerAction" t-extend="ViewManager">
+        <t t-jquery="select.oe_debug_view" t-operation="replace">
+            <select t-if="widget.session.uid === 1 and widget.session.debug" class="oe_debug_view"/>
+        </t>
+</t>
+
+</templates>

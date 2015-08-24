@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+		<record model="ir.ui.view" id="endo_account_asset_inherit_form_view">
+            <field name="model">account.asset.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_asset_form"/>
+            <field name="arch" type="xml">
+             <xpath expr="//field[@name='purchase_value']" position="before">
+            	<field name="endo_gross_value" widget="monetary" options="{'currency_field': 'currency_id'}" on_change="onchange_purchase_salvage_value(purchase_value, salvage_value)"/>
+			 </xpath>
+			 <xpath expr="//field[@name='company_id']" position="after">
+            	<field name="tag"/>
+			 </xpath>
+			 <xpath expr="//page[@string='Depreciation Board']" position="attributes">
+			 			  <attribute name="string">Depreciation Schedule</attribute>
+			</xpath>
+		<xpath expr="//button[@name='set_to_close']" position="replace">
+			<button name="set_to_close" states="open" string="Set to Close" type="object" class="oe_highlight" confirm="Do you want to confirm to close"/>
+		</xpath>
+			</field>
+	</record>
+     </data>
+</openerp>
