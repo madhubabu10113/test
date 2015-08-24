@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+        <record id="view_convert_to_lead" model="ir.ui.view">
+            <field name="name">convert.to.lead.form</field>
+            <field name="model">convert.to.lead</field>
+            <field name="arch" type="xml">
+                <form string="Convert to Lead" version="7.0">
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Describe the lead..."/></h1>
+                    </div>
+                    <footer>
+                        <button name="action_create_lead" string="Create Lead" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_convert_to_lead" model="ir.actions.act_window">
+            <field name="name">Convert to Lead</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">convert.to.lead</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_convert_to_lead"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

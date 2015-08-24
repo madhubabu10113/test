@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+
+
+        <!-- Partner Old Contacts/Global Contacts repository Search View -->
+        <record id="view_partner_old_contacts_filter" model="ir.ui.view">
+            <field name="name">Global Contacts repository Search</field>
+            <field name="model">res.partner.old.contacts</field>
+            <field name="arch" type="xml">
+                 <search string="Search Global Contacts repository">
+
+
+                   <field name="company_name" string="Company Name" filter_domain="[('company_name','ilike',self)]"/>
+                   <field name="name" string="Name" filter_domain="[('name','ilike',self)]"/>
+                   <field name="lastname" string="Last Name" filter_domain="[('lastname','ilike',self)]"/>
+                   <field name="firstname" string="Firstname Name" filter_domain="[('firstname','ilike',self)]"/>
+
+
+                      <group expand="0" string="Group By..." colspan="16">
+                        <filter string="Source/ Reference" domain="[]" context="{'group_by':'source'}"/>
+                        <filter string="Company Name" domain="[]" context="{'group_by':'company_name'}"/>
+                        <filter string="Salesperson" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Team" domain="[]" context="{'group_by':'section_id'}"/>
+                        <filter string="Country" domain="[]" context="{'group_by':'country_id'}"/>
+                        <filter string="Date of entry" domain="[]" context="{'group_by':'date_created'}"/>
+                        
+                    </group>
+                 </search>
+            </field>
+        </record>
+
+
+        <!-- Partner Old Contacts/Global Contacts repository -->
+        <record id="view_partner_old_contacts_tree" model="ir.ui.view">
+            <field name="name">res.partner.old.contacts.tree</field>
+            <field name="model">res.partner.old.contacts</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Contacts">
+                    <field name="user_id" invisible="1"/>
+                    <field name="section_id" invisible="1"/>
+                    <field name="country_id" invisible="1"/>
+                    <field name="source" invisible="1"/>
+                    <field name="date_created" invisible="1"/>
+
+                    <field name="name"/>
+                    <field name="company_name"/>
+                    <field name="job_position"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+               </tree>
+            </field>
+        </record>
+        
+ <!-- Partner Old Contacts/Global Contacts repository Kanban View  -->
+		<record model="ir.ui.view" id="view_partner_old_contacts_kanban">
+            <field name="name">Global Contacts repository</field>
+            <field name="model">res.partner.old.contacts</field>
+            <field name="arch" type="xml">
+               <kanban version="7.0">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="other_phone"/>
+                <field name="work_phone"/>
+				<field name="image_small"/>
+                <field name="image"/>
+                <field name="website"/>
+                <field name="has_image"/>
+					<templates>
+                     <t t-name="kanban-box">
+						<div class="oe_kanban_vignette oe_semantic_html_override">
+                           
+
+                            <a type="open">
+                                    <t t-if="record.has_image.raw_value === true">
+                                        <img t-att-src="kanban_image('res.partner.old.contacts', 'image_small', record.id.value)" class="oe_kanban_image"/>
+                                    </t>
+                                    <t t-if="record.has_image.raw_value === false">
+                                            <img t-att-src='_s + "/base/static/src/img/avatar.png"' class="oe_kanban_image"/>
+                                    </t>
+                                </a>
+                                        
+                                <div class="oe_kanban_details">
+                                    <h4>
+                                        <a type="open">
+<!--                                             <t t-if="record.area.raw_value">[<field name="area"/>]</t>-->
+											<t t-if="record.company_name.raw_value"><li><field name="company_name"></field>,</li></t> <field name="name"/>
+                                        </a>
+                                    </h4>
+                                    <div name="tags"/>
+                                    <ul>
+<!--                                  <li>Total Floors: <field name="floor_total"></field></li>-->
+								 
+								<t t-if="record.email.raw_value"><li><field name="email"></field></li></t>
+                                <t t-if="record.website.raw_value"><li><field name="website"></field></li></t>
+                                <t t-if="record.phone.raw_value"><li>Phone:<field name="phone"></field></li></t>
+                                <t t-if="record.other_phone.raw_value"><li>Other Phone:<field name="other_phone"></field></li></t>
+                                <t t-if="record.work_phone.raw_value"><li>Work Phone:<field name="work_phone"></field></li></t>
+                                    </ul>
+                                </div>
+                            </div>
+					 </t>
+                    </templates>
+			   </kanban>
+	         </field>
+        </record>
+
+        <record id="view_partner_old_contacts_form" model="ir.ui.view">
+            <field name="name">res.partner.old.contacts.form</field>
+            <field name="model">res.partner.old.contacts</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Old Partners" version="7.0">
+                    <sheet>
+                    <div class="oe_right oe_button_box" name="buttons">
+                        <button class="oe_inline oe_stat_button" type="action"
+				icon="fa-star"
+                                name="%(action_convert_to_lead)d">
+			        <div>Convert To<br/>Lead</div>
+                        </button>
+                    </div>
+                        <field name="image_medium" widget="image" class="oe_avatar oe_left"/>
+                        <field name="has_image" invisible="1"/>
+                  <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        
+                        <field name="firstname" placeholder="First Name"/>
+                        <field name="middle_initial" placeholder="Middle Initial"/>
+                        <field name="lastname" placeholder="Last Name"/>
+                        <field name="title" placeholder="Title" options='{"no_open": True}'/>
+                        <field name="company_name" placeholder="Company Name"/>
+                    </div>
+                    <group>
+                        <group>
+                            <label for="address" string="Address"/>
+                            <div>
+                                <field name="address" placeholder="Address Line1"/>
+                                <field name="address2" placeholder="Address Line2"/>
+                                <div class="address_format">
+                                    <field name="city" placeholder="City" style="width: 40%%"/>
+                                    <field name="state_id" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}' on_change="onchange_state(state_id)"/>
+                                    <field name="zip" placeholder="ZIP" style="width: 20%%"/>
+                                </div>
+                                <field name="country_id" placeholder="Country" class="oe_no_button" options='{"no_open": True}'/>
+                                <field name="website" widget="url" placeholder="e.g. www.endosoft.com"/>
+                            </div>
+                            <field name="job_position" placeholder="e.g. Manager"/>
+                            <field name="department" placeholder="e.g. sales department"/>
+                            <field name="source" placeholder="Source/ Reference" />
+                            <field name="user_id" placeholder="Salesperson"/>
+                            <field name="section_id" placeholder="Sales Team"/>
+                        </group>
+
+                        <group>
+                            <field name="phone" placeholder="e.g. +32.81.81.37.00"/>
+                            <field name="other_phone" placeholder="e.g. +32.81.81.37.11"/>
+                            <field name="work_phone" placeholder="e.g. +32.81.81.37.22"/>
+                            <field name="mobile" placeholder="e.g. +32.91.91.97.00"/>
+                            <field name="fax" placeholder="e.g. +42.50.81.37"/>
+                            <field name="email" placeholder="e.g. support@endosoft.com"/>
+                            <field name="date_created"/>
+                            <field name="category_id" placeholder="Category.." widget="many2many_tags"
+                                domain="[('object_id.model','=','res.partner.old.contacts')]"
+                                context="{'object_name': 'res.partner.old.contacts'}" />
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Notes">
+                            <field name="comment"/>
+                        </page>
+                    </notebook>
+
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+
+
+        <record id="action_partner_old_contacts_form" model="ir.actions.act_window">
+        <field name="name">Global Contacts repository</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner.old.contacts</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to add a contact in your address book.
+          </p><p>
+            OpenERP helps you easily track all activities related to
+            a customer; discussions, history of business opportunities,
+            documents, etc.
+          </p>
+        </field>
+    </record>
+
+<menuitem id="old_contacts_id" name="Global Contacts repository" sequence="13" parent="mail.mail_feeds_main"/>
+
+<menuitem id="old_contacts_id_sub" name="Global Contacts repository" sequence="1" parent="old_contacts_id" action="action_partner_old_contacts_form"/>
+
+    </data>
+</openerp>
