@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Sequences for hr.employee -->
+        <record id="seq_type_res_cust_three" model="ir.sequence.type">
+            <field name="name">Customer Id</field>
+            <field name="code">res.partner</field>
+        </record>
+
+        <record id="seq_partner_com3" model="ir.sequence">
+            <field name="name">Customer Id</field>
+            <field name="code">res.partner</field>
+<!--            <field name="prefix">LLC</field> -->
+            <field name="padding">5</field>
+            <field name="company_id" eval="3"/> <!-- SET FAC Company ID! (select id from res_company where name='LLC')-->
+        </record>
+
+        <record id="seq_partner_com4" model="ir.sequence">
+            <field name="name">Customer Id</field>
+            <field name="code">res.partner</field>
+<!--            <field name="prefix">EBV</field> -->
+            <field name="padding">5</field>
+            <field name="company_id" eval="4"/> <!-- SET BV Company ID!-->
+        </record>
+
+       <record id="seq_partner_com5" model="ir.sequence">
+            <field name="name">Customer Id</field>
+            <field name="code">res.partner</field>
+<!--            <field name="prefix">LTD</field>  -->
+            <field name="padding">5</field>
+            <field name="company_id" eval="5"/> <!-- SET LTD Company ID!-->
+        </record>
+
+       <record id="seq_partner_com6" model="ir.sequence">
+            <field name="name">Customer Id</field>
+            <field name="code">res.partner</field>
+<!--            <field name="prefix">PVT</field>  -->
+            <field name="padding">5</field>
+            <field name="company_id" eval="6"/> <!-- SET PVT Company ID!-->
+        </record>
+
+       <record id="seq_partner_com7" model="ir.sequence">
+            <field name="name">Customer Id</field>
+            <field name="code">res.partner</field>
+<!--            <field name="prefix">PTY</field>  -->
+            <field name="padding">5</field>
+            <field name="company_id" eval="7"/> <!-- SET PTY Company ID!-->
+        </record>
+
+
+    </data>
+</openerp>
