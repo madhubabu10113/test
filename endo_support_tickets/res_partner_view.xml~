@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+      	
+	<record id="view_ticket_partner_info_form" model="ir.ui.view">
+            <field name="name">res.partner.ticket.history.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="crm_claim.view_claim_partner_info_form1"/>
+            <field name="arch" type="xml">
+                
+				<field name="website" position="after">
+                	<field name="cust_status"/>
+                </field>
+                <xpath expr="//field[@name='ref']" position="replace"/>
+                <field name="parent_id" position="before">
+                	<!--label for="ref" string="Account No."/-->
+                     <field name="ref" placeholder="Account No."/>
+                </field>
+                
+                <xpath expr="//group[@name='grp_claim']" position="replace">
+                    <group name="grp_claim" string="Support Tickets">
+                        <field name="claims_ids2" colspan="4" attrs="{'invisible':['!',('parent_id','=',False)]}">
+                            <tree string="Partners Support Tickets">
+								<field name="x_tick_id"/>
+                                <field name="name"/>
+                                <field name="user_id"/>
+                            </tree>
+                        </field>
+                        <field name="claims_ids" colspan="4" nolabel="1" attrs="{'invisible':[('parent_id','=',False)]}">
+                            <tree>
+								<field name="x_tick_id"/>
+                                <field name="name"/>
+                                <field name="user_id"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group name="grp_calls" string="Phone Calls">
+                      <field name="phonecall_ids" nolabel="1">
+						<tree colors="gray:state in ('cancel','done');blue:state in ('pending',)">
+                			<field name="date"/>
+               			 <field name="name"/>
+                <field name="partner_id"/>
+                <button string="Meeting"
+                    states="open,pending"
+                    name="action_make_meeting"
+                    icon="gtk-redo"
+                    type="object"/>
+                <button string="Convert to Opportunity"
+                    type="object"
+                    name="action_button_convert2opportunity"
+                    states="open,pending"
+                    icon="gtk-index"
+                    attrs="{'invisible':[('opportunity_id','!=',False)]}"/>
+                <field name="partner_phone"/>
+                <field name="user_id"/>
+                <field name="categ_id" invisible="1"/>
+                <field name="create_date" invisible="1"/>
+                <field name="opportunity_id" invisible="1"/>
+                <!--field name="state"/-->
+                <button name="case_open" string="Confirm" type="object"
+                        states="draft,pending" icon="gtk-go-forward"/>
+                <button name="case_close" string="Held" type="object"
+                        states="open,pending" icon="gtk-jump-to"/>
+                <button name="case_cancel" string="Cancel" type="object"
+                        states="draft,open,pending" icon="gtk-cancel"/>
+                <button name="case_reset" string="Reset to Todo" type="object"
+                        states="cancel" icon="gtk-convert"/>
+            </tree>                                          
+                      </field>                  
+                    </group>
+
+                </xpath>
+            </field>
+        </record>
+        
+        <act_window
+            context="{'search_default_partner_id': [active_id], 'search_default_x_customer': [active_id],'default_partner_id': active_id}"
+            id="crm_claim.act_claim_partner"
+            name="Support Tickets"
+            view_mode="tree,form"
+            res_model="crm.claim"
+            src_model="res.partner"/>
+
+    </data>
+</openerp>

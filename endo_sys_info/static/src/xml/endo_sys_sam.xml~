@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+<table t-name="EndoListView" class="oe_list_content">
+    <thead>
+    	<tr class="oe_list_header_columns">
+                <th class="oe_list_header_many2one oe_sortable"><div>
+                    Room Name
+                </div></th>
+
+                <th class="oe_list_header_integer"><div>
+                    Licensce
+                </div></th>
+	</tr>
+    </thead>
+</table>
+</templates>

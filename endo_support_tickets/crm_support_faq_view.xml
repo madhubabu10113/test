@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+<!-- FAQ Module-->
+        <record id="crm_ticket_faq_tree" model="ir.ui.view">
+            <field name="name">crm.ticket.faq.tree</field>
+            <field name="model">crm.support.faq</field>
+            <field name="arch" type="xml">
+                <tree string="Support FAQ">
+                    <field name="name"/>
+                    <field name="faq_title"/>
+                    <field name="categ_id" invisible="1"/>
+                    <field name="type_action" invisible="1"/>
+                    <field name="description"/>
+                    <field name="resolution"/>
+                </tree>
+            </field>
+        </record>
+        
+<!-- Search view for FAQ -->
+
+		<record id="view_crm_ticket_faq_filter" model="ir.ui.view">
+            <field name="name">crm.ticket.faq.select</field>
+            <field name="model">crm.support.faq</field>
+            <field name="arch" type="xml">
+                <search string="Search FAQ">
+                   <field string="FAQ Title" name="faq_title" filter_domain="['|',('faq_title','ilike',self),('name','ilike',self)]"/>
+                   <separator/>
+                   <filter string="Active" name="active" domain="[('active','=',1)]"/>
+                   <group expand="0" string="Group By...">
+                       <filter string="Category" context="{'group_by': 'categ_id'}"/>
+                       <filter string="Action Type" context="{'group_by': 'type_action'}"/>
+                   </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="crm_ticket_faq_form" model="ir.ui.view">
+            <field name="name">crm.ticket.faq.form</field>
+            <field name="model">crm.support.faq</field>
+            <field name="arch" type="xml">
+                <form string="Support FAQ" version="7.0">
+                     <sheet>
+                     <h1>
+                        <field name="name" class="oe_inline" attrs="{'invisible': [('name','=','/')]}" readonly="1"/>
+                    </h1>
+                     <group colspan="4">
+                  	<field name="faq_title"/>
+                    <field name="categ_id" widget="selection" domain="[('object_id.model', '=', 'crm.claim')]"/>
+                    <field name="owner_tick" attrs="{'invisible':[('owner_tick','=',False)]}" groups="base.group_user"/>
+                    <field name="active" groups="base.group_user"/>
+                    </group>
+                   <group colspan="2" col="2">
+                                    <separator colspan="2" string="Resolution Actions"/>
+                                    <field name="type_action"/>
+                                    <field name="resolution" colspan="2" nolabel="1"/>
+                                </group>
+                    <notebook>
+                         <page string="Description">
+                             <group colspan="4">
+                    <field name="description" nolabel="1"/>
+                    </group>                      
+                         </page>
+                        <page string="Related Support Tickets" groups="base.group_user">
+                            
+                                <group string="Related Support Tickets">
+                                     <field name="tick_ids" domain="['|',('x_faq_id','!=',id),('faq_id','=',False)]" groups="base.group_user" nolabel="1">
+                        				<tree>
+                            				<field name="x_tick_id"/>
+											<field name="name"/>
+                    						<field name="partner_id"/>
+                    						<field name="user_id"/>
+                    						<field name="date"/>
+                    						<field name="stage_id"/>
+                        				</tree>
+                    				</field>
+                                </group>
+                           </page> 
+                           
+					</notebook>          
+                 </sheet>   
+                </form>
+            </field>
+        </record>
+
+        <record id="crm_ticket_faq_act" model="ir.actions.act_window">
+            <field name="name">Support FAQ</field>
+            <field name="res_model">crm.support.faq</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="crm_ticket_faq_tree"/>
+            <field name="search_view_id" ref="view_crm_ticket_faq_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new faq in the processing of the tickets. 
+              </p><p>
+                You can create support faqs to use them in support tickets.
+              </p>
+            </field>
+        </record>
+        
+	<menuitem name="Support FAQs" id="menu_support_faq" parent="base.menu_aftersale" groups="base.group_user" action="crm_ticket_faq_act" sequence="3"/>
+	
+<!-- Portal user access for FAQ -->
+
+		<record id="portal_view_crm_ticket_faq_filter" model="ir.ui.view">
+            <field name="name">crm.ticket.faq.select</field>
+            <field name="model">crm.support.faq</field>
+            <field name="arch" type="xml">
+                <search string="Search FAQ">
+                   <field string="FAQ Title" name="faq_title" filter_domain="['|',('faq_title','ilike',self),('name','ilike',self)]"/>
+                   <separator/>
+                   <group expand="0" string="Group By...">
+                       <filter string="Category" context="{'group_by': 'categ_id'}"/>
+                       <filter string="Action Type" context="{'group_by': 'type_action'}"/>
+                   </group>
+               </search>
+            </field>
+        </record>
+		
+		<record id="portal_crm_ticket_faq_tree" model="ir.ui.view">
+            <field name="name">crm.ticket.faq.tree</field>
+            <field name="model">crm.support.faq</field>
+            <field name="arch" type="xml">
+                <tree string="Support FAQ">
+                    <field name="faq_title"/>
+                    <field name="categ_id" invisible="1"/>
+                    <field name="type_action" invisible="1"/>
+                    
+                </tree>
+            </field>
+        </record>
+        
+
+		<record id="crm_support_faq_act" model="ir.actions.act_window">
+            <field name="name">FAQs</field>
+            <field name="res_model">crm.support.faq</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="crm_ticket_faq_tree"/>
+            <field name="context">{"stage_type":'claim', "portal":'True'}</field>
+            <field name="search_view_id" ref="portal_view_crm_ticket_faq_filter"/>
+            <field name="target">current</field>
+            
+        </record>
+
+       <menuitem name="FAQs" id="portal_support_faq_menu" parent="portal.portal_after_sales" 
+            action="crm_support_faq_act" sequence="11"/>
+
+
+           </data>
+</openerp>

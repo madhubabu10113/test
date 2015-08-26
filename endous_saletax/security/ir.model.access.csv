@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_ticket_priority_manager,crm.ticket.priority.manager,model_crm_ticket_priority,base.group_sale_manager,1,1,1,1
+access_crm_ticket_priority_user,crm.ticket.priority.user,model_crm_ticket_priority,base.group_sale_salesman,1,1,1,0
+access_crm_ticket_priority_partner_manager,crm.ticket.priority.partner.manager,model_crm_ticket_priority,base.group_partner_manager,1,0,0,0
+access_crm_ticket_priority_cust_portal,crm.ticket.priority.cust.portal,model_crm_ticket_priority,portal.group_portal,1,0,0,0
+crm_support_faq_manager,crm.support.faq.manager,model_crm_support_faq,base.group_sale_manager,1,1,1,1
+crm_support_faq_user,crm.support.faq.user,model_crm_support_faq,base.group_sale_salesman,1,1,1,0
+crm_support_faq_partner_manager,crm.support.faq.partner.manager,model_crm_support_faq,base.group_partner_manager,1,0,0,0
+crm_support_faq_cust_portal,crm.support.faq.cust.portal,model_crm_support_faq,portal.group_portal,1,0,0,0
+access_crm_ticket_mgr_manager,crm.ticket.mgr.manager,model_crm_ticket_mgr,base.group_sale_manager,1,1,1,1
+access_crm_ticket_mgr_user,crm.ticket.mgr.user,model_crm_ticket_mgr,base.group_sale_salesman,1,1,1,0
+access_crm_ticket_mgr_partner_manager,crm.ticket.mgr.partner.manager,model_crm_ticket_mgr,base.group_partner_manager,1,0,0,0
+access_crm_ticket_mgr_cust_portal,crm.ticket.mgr.cust.portal,model_crm_ticket_mgr,portal.group_portal,1,0,0,0

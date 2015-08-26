@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record id="res_partner_crm_sys_info2" model="ir.ui.view">
+        <field name="name">res.partner.sys.info</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="endo_sys_info.res_partner_sys_info" />
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+  
+ 	 <field name="db_server" attrs="{'readonly': [('is_company','=', False)]}" context="{'db_server':db_server}" position="replace">
+              <field name="db_server" context="{'db_server':db_server}" />
+  	</field>   
+	<xpath expr="//field[@name='user_id']" position="after">
+	<field name="x_technical_person" />      
+	</xpath>   
+     
+    </field>
+ </record>
+
+    </data>
+</openerp>

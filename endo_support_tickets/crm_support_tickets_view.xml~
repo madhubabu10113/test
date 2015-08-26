@@ -1,0 +1,466 @@
+<openerp>
+    <data>
+
+        <menuitem id="crm_claim.menu_config_claim" name="Support Tickets"
+            groups="base.group_no_one"
+            parent="base.menu_base_config" sequence="55"/>
+	
+        <!-- Tickets    -->
+
+   	<record model="ir.ui.view" id="crm_case_tickets_form_view">
+            <field name="name">CRM - Support Ticket Form</field>
+            <field name="model">crm.claim</field>
+            <field name="inherit_id" ref="crm_claim.crm_case_claims_form_view"/>
+            <field name="arch" type="xml">
+
+            <xpath expr="/form/sheet/group" position="before">
+                   <div class="oe_right">
+                        <button string="Convert to Opportunity"
+                            type="object" groups="base.group_user"
+                            name="action_button_convert2opportunity"
+                            attrs="{'invisible':[ '|', ('x_opportunity_id','!=',False), ('state', '=','done')]}"/>
+                        <button name="btn_faq" string="Mark as FAQ" type="object" attrs="{'invisible':['|', ('faq','=',True), ('state', '=', 'done')]}" />
+
+                     <button name="start_work" string="Start Working" type="object" attrs="{'invisible':['|', ('is_working','=',True), ('state', 'not in', ['open','pending'])]}" groups="base.group_user" class="oe_highlight"/>
+
+        <button name="%(action_support_work_log)d" string="Stop Working" type="action" attrs="{'invisible':['|', ('is_working','=',False), ('state', '=', 'done')]}" groups="base.group_user" class="oe_highlight"/>
+                	<button name="btn_ack" string="Acknowledge Customer" groups="base.group_user" type="object" attrs="{'invisible':['|', ('x_acknowledged','=',True),('state','not in',['draft','open','pending'])]}" widget="statusbar"/>
+                <field name="is_working" invisible="1"/>
+                 <field name="x_acknowledged" invisible="1"/>
+                    </div>
+		    <h1>
+                        <field name="x_tick_id" class="oe_inline" attrs="{'invisible': [('x_tick_id','=','/')]}" readonly="1"/>
+                    </h1>
+                     
+             </xpath>
+
+<!--Hide/Rename the button Settle to close-->            
+    <!--xpath expr="//button[@name='case_close']" position="replace">
+        <button name="case_close" string="Close" type="object" class="oe_highlight"
+                            states="draft,open,pending" groups="base.group_user" invisible="1"/>
+    </xpath-->
+
+
+<!--Rename the Buttion Reject to Cancel-->
+
+    <!--xpath expr="//button[@name='case_cancel']" position="replace">
+            <button name="case_cancel" string="Withdrawn" type="object" groups="base.group_user"
+                            states="draft,open,pending" invisible="1"/>
+    </xpath>
+
+             <xpath expr="//button[@name='case_close']" position="before">
+                 <field name="x_acknowledged" invisible="1"/>
+                <field name="is_working" invisible="1"/>
+                	<button name="btn_ack" string="Acknowledge Customer" groups="base.group_user" type="object" attrs="{'invisible':['|', ('x_acknowledged','=',True),('state','not in',['draft','open','pending'])]}"/>
+            </xpath-->
+             
+             <xpath expr="//field[@name='user_id']" position="after">
+                <field name="x_escalate_to" groups="base.group_user"/>
+	     <!--/xpath-->
+                
+                <group colspan="2" col="6" attrs="{'invisible':[('faq','=',False)]}">
+                <field name="faq" attrs="{'invisible':[('faq','=',False)]}" col="6" colspan="2"/>
+                <field name="x_faq_id" attrs="{'invisible':[('faq','=',False)]}" col="6" colspan="1" nolabel="1"/>
+                </group>
+                <field name="x_opportunity_id" on_change="on_change_opportunity(x_opportunity_id)" attrs="{'invisible':[('x_opportunity_id','=',False)]}" readonly="1"/>
+                
+             </xpath>
+
+
+             <field name="priority" position="after">
+                  <field name="priority" widget="selection" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                  <field name="time_spend"/>        
+             </field>
+
+            <field name="date_deadline" position="replace"/>
+            <!--field name="section_id" position="replace"/-->
+            <!--field name="state" position="replace" groups="base.group_no_one"/-->
+			<field name="user_id" position="after">
+                <field name="date_deadline"/>
+                <!--field name="section_id"/>
+                <field name="state" groups="base.group_no_one"/-->
+            </field>
+
+             <xpath expr="//page[@string='Claim Description']" position="replace">
+                            <page string="Ticket Description">
+                                <group colspan="2" col="2" groups="base.group_user">
+                                    <separator colspan="2" string="Ticket Reporter"/>
+                                    <field name="x_customer" string="Customer" domain="[('parent_id','=',False)]" on_change="onchange_partner_id(x_customer,partner_id)"/>
+
+	  			    <field name="partner_id" string="Contact Person" domain="[('parent_id','=',x_customer),('parent_id','!=',False),('x_location','=',False)]" on_change="onchange_partner_id(x_customer,partner_id)" context="{'default_parent_id': x_customer}"/>
+
+				    <field name="x_location" domain="[('parent_id','=',x_customer),('x_location','=',True)]" context="{'default_x_location': True,'default_parent_id': x_customer}"/>
+
+  				    <field name="x_room" domain="[('room_id','=',x_location)]"/>
+                                    <field name="x_license_id" domain="[('licenscee_id','=',x_room)"/>
+                                    <field name="x_license_id" domain="[('licenscee_id','=',x_room),('deactive','=',False),('support_end','&gt;=',date)]" context="{'frm_tick': True}"/>
+  				    <field name="partner_phone"/>
+                                    <field name="email_from" widget="email"/>
+				</group>
+
+                                <group colspan="2" col="2" groups="base.group_user">
+                                    <separator colspan="2" string="Responsibilities"/>
+                                    <field name="user_fault" invisible="1"/><!--Field is made invisible -->
+                                    <field name="categ_id" widget="selection" required="1"
+                                        domain="[('object_id.model', '=', 'crm.claim')]"/>
+                                    <field name="ref"/>
+                                <separator colspan="2" string="Reference FAQ"/>
+                                <field colspan="2" col="2"  name="x_ref_faq" on_change="on_change_ref_faq(x_ref_faq)" domain="['|',('owner_tick','!=',id),('owner_tick','=',False),'|',('categ_id','=',categ_id),('categ_id','=',False)]"/>
+				</group>
+                                <separator colspan="4" string="Ticket/Action Description" groups="base.group_user"/>
+                                <field name="description" colspan="4" nolabel="1"/>
+                             <group colspan="4" groups="portal.group_portal">
+                               <separator string="Resolution"/> 
+                              <field name="resolution2" colspan="2" nolabel="1" readonly="True"/> 
+                            </group>
+			</page>
+                           <page string="Work log/History" groups="base.group_user">
+                               <field name="work_log_lines" widget="one2many" nolabel="1" readonly="1">
+                           <tree editable="top">
+                              <field name="create_date"/>
+			      <field name="start_user"/>
+                              <field name="write_date"/>
+                              <field name="stop_user"/>
+                              <field name="note"/>
+                              <field name="time_spend"/>
+                           </tree>
+                    </field>
+		</page>
+		</xpath>
+                      <xpath expr="//page/group/field[@name='action_next']" position="after">
+                        <separator colspan="2" string="Customer Information Request"/>
+                        <field name="x_cir" colspan="2" nolabel="1"/>                    
+                      </xpath>
+
+</field>
+</record>
+
+	<record id="crm_case_claims_tree_view_inherit1" model="ir.ui.view">
+            <field name="name">Support Ticket Tree</field>
+            <field name="model">crm.claim</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="crm_claim.crm_case_claims_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Claims']" position="replace">
+
+                  <tree string="Support Tickets" colors="blue:state=='pending' and not(date_deadline);gray:state in ('close', 'cancel');red:date_deadline">
+                    
+                  <!--tree string="Support Tickets" colors="blue:state=='pending' and not(date_deadline and (date_deadline &lt; current_date));gray:state in ('close', 'cancel');red:date_deadline and (date_deadline &lt; current_date)"-->
+                    <field name="x_tick_id"/>
+		    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="date"/>
+                    <field name="write_date" />
+                    <field name="date_closed" />
+                    <field name="stage_id"/>
+                    <field name="date_action_next"/>
+                    <field name="action_next"/>
+                    <field name="categ_id" string="Type"/>
+                    <field name="date_deadline" invisible="1"/>
+                    
+                    <field name="state" groups="base.group_no_one"/>
+                    <button string="Convert to Opportunity"
+                    type="object" groups="base.group_user"
+                    name="action_button_convert2opportunity"
+                    icon="gtk-index"/>
+                     <field name="x_opportunity_id" invisible="1"/>
+
+		</tree>
+	       </xpath>
+	   </field>
+	</record>
+
+		<record id="view_crm_case_tickets_filter" model="ir.ui.view">
+   			<field name="name">crm.claim.search.inherit</field>
+   			<field name="model">crm.claim</field>
+  	      	<field name="type">search</field>      
+ 			<field name="inherit_id" ref="crm_claim.view_crm_case_claims_filter"/>
+        	<field name="arch" type="xml">
+      			<xpath expr="//field[@name='name']" position="replace">
+   					<field name="x_tick_id"/>
+   					<field name="name" string="Ticket Title"/>
+				</xpath>
+				<xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="x_customer" filter_domain="[('x_customer','ilike',self)]" string="Customer"/>
+					<field name="partner_id" filter_domain="[('partner_id','child_of',self)]" string="Contact Person"/>
+                 </xpath>
+				 <xpath expr="//field[@name='user_id']" position="before">
+                    <filter icon="terp-check" string="FAQ" name="faq" domain="[('faq','=',True)]" help="View tickets marked as FAQ" />
+        		 </xpath>
+        		  <xpath expr="//filter[@string='Unassigned Claims']" position="replace">
+        		 	<filter string="Unassigned Support Tickets" icon="terp-personal-" domain="[('user_id','=', False)]" help="Unassigned Claims" />
+        		 </xpath>
+        		 <xpath expr="//field[@name='user_id']" position="after">
+   					<field name="company_id"/>
+				</xpath>
+				<!--xpath expr="//filter[@string='Claim Date']" position="replace">
+        		 	<filter string="Ticket Date" icon="terp-go-month" domain="[]" help="Ticket Date" context="{'group_by':'date'}"/>
+        		 </xpath-->
+				
+			</field>
+		</record>
+
+	<record model="ir.ui.view" id="crm_claim.view_support_ticket_kanban">
+            <field name="name">crm.support.ticket.kanban</field>
+            <field name="model">crm.claim</field>
+            <field name="arch" type="xml">
+                <kanban version="7.0" default_group_by="stage_id" class="oe_background_grey">
+                    <field name="name"/>
+                    
+                    <field name="x_color"/>
+                    <field name="x_tick_id"/>
+                    <field name="stage_id"/>
+                    <field name="partner_id"/>
+					<field name="partner_phone"/>                         
+					<field name="email_from"/>
+					<field name="user_id"/>
+					<field name="x_customer"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                           
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.x_color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit Ticket</a></li></t>
+                                        <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                        
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+									<div>
+                                    	<h4><field name="x_tick_id"/></h4>
+                                   	</div>
+                                <div style="padding-left: 0.5em">
+                                    <field name="name"/>
+                                    <t t-if="record.x_customer.raw_value"><field name="x_customer"/></t>
+                                   	<p><field name="partner_id"/></p>
+									<p>	<field name="partner_phone"/></p>                                 
+									<field name="email_from"/>
+                                </div>
+                               
+                                <div class="oe_kanban_bottom_right">
+                                        <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" class="oe_kanban_avatar" t-if="record.user_id.value"/>
+                                    </div>
+                               </div>      
+                                <div class="oe_clear"></div>
+                           </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+	<record model="ir.actions.act_window" id="crm_claim.crm_case_categ_claim0">
+            <field name="name">Support Tickets</field>
+            <field name="res_model">crm.claim</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="crm_claim.view_support_ticket_kanban"/>
+            <field name="context">{"search_default_user_id":uid, "stage_type":'claim', "frm_tick": True}</field>
+            <field name="search_view_id" ref="crm_claim.view_crm_case_claims_filter"/>
+            <field name="help">Record and track your customers' support tickets. Tickets may be linked to a sales order or a lot. You can send emails with attachments and keep the full history for a ticker (emails sent, intervention type and so on). Tickets may automatically be linked to an email address using the mail gateway module.</field>
+        </record>
+
+	<menuitem name="Support Tickets" id="crm_claim.menu_crm_case_claims"
+            parent="base.menu_aftersale" action="crm_claim.crm_case_categ_claim0" sequence="1"/>
+
+<!--	Support ticket Priority Configuration -->
+
+	<record id="crm_ticket_priority_tree" model="ir.ui.view">
+            <field name="name">crm.ticket.priority.tree</field>
+            <field name="model">crm.ticket.priority</field>
+            <field name="arch" type="xml">
+                <tree string="Priorities">
+                     <field name="default"/>
+                    <field name="name"/>
+                    <field name="desc"/>
+                    <field name="interval_number"/>
+                    <field name="interval_type"/>
+                    <field name="numberemail"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="crm_ticket_priority_form" model="ir.ui.view">
+            <field name="name">crm.ticket.priority.form</field>
+            <field name="model">crm.ticket.priority</field>
+            <field name="arch" type="xml">
+                <form string="Priorities" version="7.0">
+                    <group colspan="4">
+                    <field name="name"/>
+                    <field name="default"/>
+                   </group>
+                    <newline/>
+                    <group col="4">
+                            <field name="interval_number"/>
+                            <field name="interval_type"/>
+                            <newline/>
+                            <field name="numberemail"/>
+                            
+                        </group>
+                        <newline/>
+                     <label for="desc"/>
+                    <field name="desc" nolabel="1" colspan="4"/>
+
+                </form>
+            </field>
+        </record>
+
+
+	<record id="crm_ticket_priority_action" model="ir.actions.act_window">
+             <field name="name">Support Ticket Priorities</field>
+            <field name="res_model">crm.ticket.priority</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="crm_ticket_priority_tree"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to setup a new priority of the customer support ticket. 
+              </p><p>
+                You can create priorities for the support tickets and configure the alert time
+              according to the level of priority. The alert emails will be sent to ticket owner
+              on the basis of priority if ticket is not closed.
+              </p>
+            </field>
+        </record>
+        <menuitem action="crm_ticket_priority_action" name="Priorities"
+            id="menu_crm_tick_priority-act" parent="crm_claim.menu_config_claim" groups="base.group_no_one"/>
+
+			
+<!--	Support ticket default MANAGER Configuration -->
+
+	<record id="crm_ticket_defaultmgr_tree" model="ir.ui.view">
+            <field name="name">crm.ticket.mgr.tree</field>
+            <field name="model">crm.ticket.mgr</field>
+            <field name="arch" type="xml">
+                <tree string="Default Manager">
+                     <field name="company_id"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="crm_ticket_defaultmgr_form" model="ir.ui.view">
+            <field name="name">crm.ticket.mgr.form</field>
+            <field name="model">crm.ticket.mgr</field>
+            <field name="arch" type="xml">
+                <form string="Default Manager" version="7.0">
+                    <group>
+                    	<field name="company_id" widget="selection"/>
+                    </group>
+                   	<newline/>
+                    <group col="4">
+                            <field name="default_mgrs"/>
+                            <newline/>
+                             <field name="name"/>
+                    </group>
+                    
+                </form>
+            </field>
+        </record>
+	
+	<record id="crm_ticket_defaultmgr_action" model="ir.actions.act_window">
+             <field name="name">Support Ticket Default Manager</field>
+            <field name="res_model">crm.ticket.mgr</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="crm_ticket_defaultmgr_tree"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to set default managers for the unassigned support ticket per company. 
+              </p><p>
+                You can set default managers for the unassigned support tickets for specific company who will
+              get the alert E-mails for every unassigned ticket of the company
+              </p>
+            </field>
+        </record>
+        <menuitem action="crm_ticket_defaultmgr_action" name="Default Managers"
+            id="menu_crm_tick_defaultmgr_action" parent="crm_claim.menu_config_claim" groups="base.group_no_one"/>
+
+<!-- Ticket categories  -->
+
+        <record id="crm_claim.crm_claim_categ_action" model="ir.actions.act_window">
+            <field name="name">Ticket Categories</field>
+            <field name="res_model">crm.case.categ</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="crm.crm_case_categ_tree-view"/>
+            <field name="domain">[('object_id.model', '=', 'crm.claim')]</field>
+            <field name="context" eval="{'object_id': ref('model_crm_claim')}"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a support ticket category.
+              </p><p>
+                Create support ticket categories to better manage and classify your
+                support tickets. Some example of support ticket can be: preventive action,
+                corrective action.
+              </p>
+            </field>
+        </record>
+
+<!-- Stages -->
+
+		<record id="crm_claim.crm_claim_stage_act" model="ir.actions.act_window">
+            <field name="name">Ticket Stages</field>
+            <field name="res_model">crm.claim.stage</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="crm_claim.crm_claim_stage_tree"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to setup a new stage in the processing of the support tickets. 
+              </p><p>
+                You can create support tickets stages to categorize the status of every
+                ticket entered in the system. The stages define all the steps
+                required for the resolution of a support ticket.
+              </p>
+            </field>
+        </record>
+        
+
+
+	<!-- changing the menu item in ticket in customer portal -->
+
+	<record id="portal_claim.crm_case_categ_claim0" model="ir.actions.act_window">
+            <field name="name">Support Tickets</field>
+            <field name="res_model">crm.claim</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="crm_claim.crm_case_claims_tree_view"/>
+            <field name="context">{"stage_type":'claim', "portal":'True'}</field>
+            <field name="search_view_id" ref="crm_claim.view_crm_case_claims_filter"/>
+            <field name="target">current</field>
+            <field name="help"  type="html">
+              <p class="oe_view_nocontent_create">
+                Click to register a new support ticket. 
+              </p><p>
+                You can track your support tickets from this menu and the action we
+                will take.
+              </p>
+            </field>
+        </record>
+		<menuitem name="Support Tickets" id="portal_claim.portal_after_sales_claims" parent="portal.portal_after_sales" 
+            action="portal_claim.crm_case_categ_claim0" sequence="10"/>
+		
+<!-- Company in incoming mail server -->
+
+	<record model="ir.ui.view" id="crm_tickets_mailserver_form_view">
+            <field name="model">fetchmail.server</field>
+            <field name="inherit_id" ref="fetchmail.view_email_server_form"/>
+            <field name="arch" type="xml">
+             <xpath expr="//field[@name='date']" position="after">
+            	<field name="company_id" groups="base.group_multi_company" widget="selection"/>
+			 </xpath>
+			 </field>
+	</record>
+
+
+		<record id="crm.mt_lead_create" model="mail.message.subtype">
+            <field name="name">Lead Created</field>
+            <field name="res_model">crm.lead</field>
+            <field name="default" eval="False"/>
+            <field name="description">Information request received.</field>
+        </record>
+
+
+    </data>
+</openerp>
+

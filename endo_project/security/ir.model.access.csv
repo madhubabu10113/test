@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_db_server_licenses,db.server.licenses,model_db_server_licenses,project.group_project_user,1,0,0,0
+access_db_server_licenses_manager,db.server.licenses,model_db_server_licenses,project.group_project_manager,1,1,1,1
+access_ib_version,ib.version,model_ib_version,project.group_project_user,1,0,0,0
+access_ib_version_manager,ib.version,model_ib_version,project.group_project_manager,1,1,1,1

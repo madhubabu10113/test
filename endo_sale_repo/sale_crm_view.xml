@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+
+        <record model="ir.ui.view" id="sale_repo_view_inherit1">
+            <field name="name">sale.order.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_crm.sale_view_inherit123"/>
+            <field name="arch" type="xml">
+		<xpath expr="//field[@name='categ_ids']" position="before">
+                    <field name="x_sale_repo" widget="selection"/>
+		</xpath>
+            </field>
+        </record>
+
+<!--
+        <record id="view_sales_order_filter_inherit" model="ir.ui.view">
+            <field name="name">sale.order.list.select</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                    <separator/>
+                    <filter string="My Sales Team(s)"
+                        icon="terp-personal+"
+                        domain="[('section_id.user_id','=',uid)]"
+                        help="My Sales Team(s)"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="section_id" string="Sales Team"/>
+                </xpath>
+            </field>
+        </record>
+-->
+
+
+    </data>
+</openerp>

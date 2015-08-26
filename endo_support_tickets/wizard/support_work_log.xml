@@ -1,0 +1,32 @@
+<openerp>
+      <data>
+
+        <record id="view_support_work_log" model="ir.ui.view">
+            <field name="name">Action Tried to Solve</field>
+            <field name="model">support.work.log</field>
+            <field name="arch" type="xml">
+                <form string="Action Tried to Solve" version="7.0">
+                
+                <group col="6" colspan="2">
+                     <field name="note" placeholder="Put a note on what you tried out to solve..." nolabel="1"/>
+               </group>
+                    <footer>
+                        <button name="stop_work" string="Stop Working" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_support_work_log" model="ir.actions.act_window">
+               <field name="name">Action Tried to Solve</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">support.work.log</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>
+               <field name="context">{'record_id' : active_id}</field>
+               <field name="target">new</field>
+        </record>
+</data>
+</openerp>

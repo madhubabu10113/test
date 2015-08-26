@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+		<record model="ir.ui.view" id="endo_hr_employee_inherit_form_view">
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+             <xpath expr="//field[@name='company_id']" position="after">
+            	<field name="leave_structure" />
+			 </xpath>
+             <xpath expr="//field[@name='coach_id']" position="before">
+            	<field name="x_hr_id" />
+			 </xpath>
+	 </field>
+	</record>
+     </data>
+</openerp>

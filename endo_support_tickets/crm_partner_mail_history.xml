@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+    <act_window
+            context="{'search_default_partner_ids': active_id, 'default_partner_ids': active_id}"
+            id="action_mail_message_partner_tree"
+            name="Related Messages"
+            res_model="mail.message"
+            src_model="res.partner"
+           />
+    </data>
+</openerp>

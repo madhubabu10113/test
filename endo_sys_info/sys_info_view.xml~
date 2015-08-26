@@ -1,0 +1,376 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+
+    <menuitem id="sys_info_main_id" name="System Information" parent="base.menu_base_config" />    
+    
+<!--    System Installed -->
+
+        <record id="sys_installed_form" model="ir.ui.view">
+            <field name="name">sys.installed.form</field>
+            <field name="model">sys.installed</field>
+            <field name="arch" type="xml">
+                <form string="System Installed" version="7.0">
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+
+            
+            <label for="description" class="oe_edit_only"/>
+            <field name="description" placeholder="Description about the System...."/>
+                </sheet>
+                </form>
+           </field>
+        </record>
+    
+        <record id="sys_installed_tree" model="ir.ui.view">
+            <field name="name">sys.installed.tree</field>
+            <field name="model">sys.installed</field>
+            <field name="arch" type="xml">
+                <tree string="System Installed">
+                    <field name="name"/>
+                </tree>
+           </field>
+        </record>
+
+       <record id="action_sys_installed" model="ir.actions.act_window">
+            <field name="name">System Installed</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.installed</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Installed System.
+              </p>
+            </field>
+        </record>
+
+<!--Database Server-->
+            <record id="sys_info_db_form" model="ir.ui.view">
+            <field name="name">sys.info.db.form</field>
+            <field name="model">sys.info.db</field>
+            <field name="arch" type="xml">
+                <form string="System Installed" version="7.0">
+                    <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+
+             <label for="description" class="oe_edit_only"/>
+            <field name="description" placeholder="Description about the System...."/>
+                    </sheet>
+                </form>
+           </field>
+        </record>
+    
+        <record id="sys_info_db_tree" model="ir.ui.view">
+            <field name="name">sys.info.db.tree</field>
+            <field name="model">sys.info.db</field>
+            <field name="arch" type="xml">
+                <tree string="Database Server">
+                    <field name="name"/>
+                </tree>
+           </field>
+        </record>
+
+       <record id="action_sys_info_db" model="ir.actions.act_window">
+            <field name="name">Database Server</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.info.db</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new System DB Info.
+              </p>
+            </field>
+        </record>
+
+<!--Hospital information system-->
+
+     <record id="sys_his_form" model="ir.ui.view">
+            <field name="name">sys.his.form</field>
+            <field name="model">sys.his</field>
+            <field name="arch" type="xml">
+                <form string="Hospital Information System" version="7.0">
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+
+            
+            <label for="description" class="oe_edit_only"/>
+            <field name="description" placeholder="Description about the Hospital Information System...."/>
+                </sheet>
+                </form>
+           </field>
+        </record>
+    
+        <record id="sys_his_tree" model="ir.ui.view">
+            <field name="name">sys.his.tree</field>
+            <field name="model">sys.his</field>
+            <field name="arch" type="xml">
+                <tree string="Hospital Information System">
+                    <field name="name"/>
+                </tree>
+           </field>
+        </record>
+
+
+       <record id="action_sys_his" model="ir.actions.act_window">
+            <field name="name">Hospital Information System</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.his</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Location.
+              </p>
+            </field>
+        </record>
+
+<!--PACS-->
+
+     <record id="sys_pacs_form" model="ir.ui.view">
+            <field name="name">sys.pacs.form</field>
+            <field name="model">sys.pacs</field>
+            <field name="arch" type="xml">
+                <form string="PACS" version="7.0">
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+
+            
+            <label for="description" class="oe_edit_only"/>
+            <field name="description" placeholder="Description about the PACS...."/>
+                </sheet>
+                </form>
+           </field>
+        </record>
+    
+        <record id="sys_pacs_tree" model="ir.ui.view">
+            <field name="name">sys.pacs.tree</field>
+            <field name="model">sys.pacs</field>
+            <field name="arch" type="xml">
+                <tree string="PACS">
+                    <field name="name"/>
+                </tree>
+           </field>
+        </record>
+
+       <record id="action_sys_pacs" model="ir.actions.act_window">
+            <field name="name">PACS</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.pacs</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new PACS.
+              </p>
+            </field>
+        </record>
+
+<!--Custom Cabling-->
+
+<!--Cable Type-->
+
+         <record id="action_sys_cable_type" model="ir.actions.act_window">
+            <field name="name">Cable Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.cable.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Cable Type.
+              </p>
+            </field>
+        </record>
+
+<!--Cable Length--> 
+
+         <record id="action_sys_cable_length" model="ir.actions.act_window">
+            <field name="name">Cable Length</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.cable.length</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Cable Length.
+              </p>
+            </field>
+        </record>
+
+<!--Cable Communication-->
+
+     <record id="action_sys_cable_communication" model="ir.actions.act_window">
+            <field name="name">Communication</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.cable.communication</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Communication.
+              </p>
+            </field>
+        </record>
+
+
+<!--Video Processors-->
+<!--    Brand-->
+         <record id="action_sys_video_process_brnd" model="ir.actions.act_window">
+            <field name="name">Brand</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.video.process.brnd</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Video Processor Brand.
+              </p>
+            </field>
+        </record>
+
+<!--Type-->
+
+         <record id="action_sys_video_process_type" model="ir.actions.act_window">
+            <field name="name">Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.video.process.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Video Processor Type.
+              </p>
+            </field>
+        </record>
+
+
+<!--Communication-->
+
+         <record id="action_sys_video_process_com" model="ir.actions.act_window">
+            <field name="name">Communication</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.video.process.com</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Communication.
+              </p>
+            </field>
+        </record>
+<!--Other Equipment-->
+
+<!--    Brand-->
+         <record id="action_sys_other_equ_brnd" model="ir.actions.act_window">
+            <field name="name">Brand</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.other.equ.brnd</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Video Processor Brand.
+              </p>
+            </field>
+        </record>
+<!--Type-->
+         <record id="action_sys_other_equ_type" model="ir.actions.act_window">
+            <field name="name">Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.other.equ.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Video Processor Type.
+              </p>
+            </field>
+        </record>
+
+<!--Communication-->
+
+         <record id="action_sys_other_equ_com" model="ir.actions.act_window">
+            <field name="name">Communication</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.other.equ.com</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Communication.
+              </p>
+            </field>
+        </record>
+
+<!--DICOM-->
+<!--* no separate configuration menu is added for creating the dicom-->
+
+         <record id="action_sys_dicom_type" model="ir.actions.act_window">
+            <field name="name">DICOM Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.dicom.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new DICOM Type.
+              </p>
+            </field>
+        </record>
+
+<!--Release #-->
+
+         <record id="action_sys_exe_version" model="ir.actions.act_window">
+            <field name="name">Release #</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sys.exe.version</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Communication.
+              </p>
+            </field>
+        </record>
+
+
+
+
+   
+        <menuitem id="sys_installed_id" parent="sys_info_main_id" action="action_sys_installed"/>  
+        <menuitem id="sys_info_db_id" parent="sys_info_main_id" action="action_sys_info_db"/>
+        <menuitem id="sys_his_id" parent="sys_info_main_id" action="action_sys_his"/>
+        <menuitem id="sys_pacs_id" parent="sys_info_main_id" action="action_sys_pacs"/>
+        <menuitem id="sys_exe_version_id" parent="sys_info_main_id" action="action_sys_exe_version"/>
+
+        <menuitem id="sys_video_process_main" parent="sys_info_main_id"  name="Video Processor"/> 
+        <menuitem id="sys_video_process_brnd_id" parent="sys_video_process_main" action="action_sys_video_process_brnd"/>
+        <menuitem id="sys_video_process_type_id" parent="sys_video_process_main" action="action_sys_video_process_type"/>
+        <menuitem id="sys_video_process_com_id" parent="sys_video_process_main" action="action_sys_video_process_com"/>
+
+        <menuitem id="sys_other_equ_main" parent="sys_info_main_id"  name="Other Equipment"/> 
+        <menuitem id="sys_other_equ_brnd_id" parent="sys_other_equ_main" action="action_sys_other_equ_brnd"/>
+        <menuitem id="sys_other_equ_type_id" parent="sys_other_equ_main" action="action_sys_other_equ_type"/>
+        <menuitem id="sys_other_equ_com_id" parent="sys_other_equ_main" action="action_sys_other_equ_com"/>
+
+
+
+        <menuitem id="sys_custom_cable_main" parent="sys_info_main_id"  name="Custom cable"/> 
+        <menuitem id="sys_cable_type_id" parent="sys_custom_cable_main" action="action_sys_cable_type"/>
+        <menuitem id="sys_cable_length_id" parent="sys_custom_cable_main" action="action_sys_cable_length"/>
+        <menuitem id="sys_cable_communication_id" parent="sys_custom_cable_main" action="action_sys_cable_communication"/>
+
+
+
+
+
+    </data>
+</openerp>
+

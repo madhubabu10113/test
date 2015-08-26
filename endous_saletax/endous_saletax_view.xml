@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+		<record id="us_taxation_company_config" model="ir.ui.view">
+            <field name="name">res.company.us_taxation.config</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_registry']" position="after">
+                   <field name="us_taxation"/>
+                </xpath>
+            </field>
+        </record>
+        
+
+		<!--record model="ir.ui.view" id="endo_account_tax_inherit_view">
+            <field name="name">Endo Account Tax Form</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='description']" position="after">
+				<field name="zip" placeholder="ZIP"/>
+			</xpath>
+               
+			</field>
+        </record-->
+
+    </data>
+</openerp>

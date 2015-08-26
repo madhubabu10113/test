@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<openerp>
+    <data>
+        <template id="endo_sys_assets_backend" inherit_id="web.template">
+            <xpath expr="//table[@class='oe_list_content']" position="replace">
+                <!--script type="text/javascript" src="/endo_sys_info/static/src/js/endo_sys_info.js"></script-->
+<table t-name="ENDOListView" class="oe_list_content">
+    <t t-set="columns_count" t-value="visible_columns.length + (options.selectable ? 1 : 0) + (options.deletable ? 1 : 0)"/>
+    <thead>
+    	<tr class="oe_list_header_columns">
+                <th><div>
+                    Room Name
+                </div></th>
+		<!--p>Welcome to rooms</p-->
+        </tr>
+    </thead>
+</table>
+            </xpath>
+        </template>
+    </data>
+</openerp>

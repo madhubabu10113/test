@@ -1,0 +1,44 @@
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="crm_sale_repo_view_form">
+            <field name="name">endo.sale.repo.form</field>
+            <field name="model">endo.sale.repo</field>
+            <field name="arch" type="xml">
+                <form string="Sale Repo" version="7.0">
+		<group col="5">	
+		    <!--field name="reps_id" invisible="1"/-->					
+		    <field name="name" style="width: 50%%" />
+		</group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_sale_repo_view_tree">
+            <field name="name">endo.sale.repo.tree</field>
+            <field name="model">endo.sale.repo</field>
+            <field name="arch" type="xml">
+                <tree string="Sale Repo">
+        	    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+	<record model="ir.actions.act_window" id="crm_sale_repo_act">
+            <field name="name">Sales Reps</field>
+            <field name="res_model">endo.sale.repo</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="crm_sale_repo_view_tree"/>
+            <!--field name="view_mode">tree,form</field-->
+	    <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Sales Reps.
+              </p>
+            </field>
+        </record>
+
+        <menuitem parent="sales_team.menu_sales_team_act" id="menu_endosoft_sales_repo" 
+	action="crm_sale_repo_act" groups="base.group_sale_manager"/>
+
+    </data>
+</openerp>

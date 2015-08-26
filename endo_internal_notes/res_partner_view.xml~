@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record id="res_partner_internal_lines" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+		<xpath expr="//notebook/page[@string='Internal Notes']" position="replace">
+		<page string="Internal Notes">
+	  	    <field name="comment" placeholder="Put an internal note..."/>
+                    <field name="internal_lines" widget="one2many" nolabel="1">
+                      <tree editable="bottom">
+                            <field name="x_cs_date"/>
+                            <!-- field name="x_cs_quarter"/ -->
+                            <field name="x_cs_score"/>
+                            <field name="x_cs_note"/>
+                      </tree>
+                    </field>
+		</page>
+		</xpath>     
+    	</field>
+ </record>
+
+
+    </data>
+</openerp>

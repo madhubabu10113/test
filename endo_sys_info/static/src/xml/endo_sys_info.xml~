@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+<table t-name="EndoListView" class="oe_list_content">
+    <t t-set="columns_count" t-value="visible_columns.length + (options.selectable ? 1 : 0) + (options.deletable ? 1 : 0)"/>
+    <thead>
+    	<tr class="oe_list_header_columns">
+                <th>
+                    Room Name
+                </th>
+                 
+                <th class="oe_list_header_integer"><div>
+                    Licensce
+                </div></th>
+                <th  class="oe_list_header_float "><div>
+                    Computer Name
+                </div></th>
+            
+                <th  class="oe_list_header_float "><div>
+                    Installed Date
+                </div></th>
+                <th  class="oe_list_header_float"><div>
+                   Support Start Date
+                </div></th>          
+                <th  class="oe_list_header_float"><div>
+                   Support EndDate
+                </div></th>
+                <th t-if="options.deletable" class="oe_list_record_delete" width="13px"></th>
+        </tr>
+    </thead>
+</table>
+<t t-name="EndoListView.rows" t-foreach="records.length" t-as="index">
+    <t t-call="EndoListView.row">
+        <t t-set="record" t-value="records.at(index)"/>
+    </t>
+</t>
+<tr t-name="EndoListView.row"
+        t-att-data-id="record.get('id')"
+        t-att-style="view.style_for(record)">
+    <t t-set="asData" t-value="record.toForm().data"/>
+    <t t-foreach="columns" t-as="column">
+        <td t-if="column.meta"> </td>
+    </t>
+    <th t-if="options.selectable" class="oe_list_record_selector" width="1">
+        <t t-set="checked" t-value="options.select_view_id == record.get('id') ? 'checked' : null"/>
+        <input t-if="options.radio" type="radio" name="radiogroup" t-att-checked="checked"/>
+        <input t-if="!options.radio" type="checkbox" name="radiogroup" t-att-checked="checked"/>
+    </th>
+    <t t-foreach="columns" t-as="column">
+        <t t-set="number" t-value="column.type === 'integer' or column.type == 'float'"/>
+        <t t-set="modifiers" t-value="column.modifiers_for(asData)"/>
+        <td t-if="!column.meta and column.invisible !== '1' or  column.type !== 'one2many'" t-att-title="column.help"
+            t-attf-class="oe_list_field_cell oe_list_field_#{column.widget or column.type} #{number ? 'oe_number' : ''} #{column.tag === 'button' ? 'oe-button' : ''} #{modifiers.readonly ? 'oe_readonly' : ''} #{modifiers.required ? 'oe_required' : ''}"
+            t-att-data-field="column.id"
+            ><t t-raw="render_cell(record, column)"/></td>
+        <td t-if="column.type == 'char'" colspan='4'></td>
+    </t>
+    <td></td><td></td>
+     <td></td><td></td>
+    <td t-if="options.deletable" class='oe_list_record_delete' width="13px">
+        <button type="button" name="delete" class="oe_i">d</button>
+    </td>
+
+    
+    
+</tr>
+<t t-extend="ViewManager">
+    <div class="oe_view_manager">
+        <table class="oe_view_manager_header">
+            <col width="20%"/>
+            <col width="35%"/>
+            <col width="15%"/>
+            <col width="30%"/>
+            <tr class="oe_header_row oe_header_row_top">
+                <td colspan="2">
+                        <h2 class="oe_view_title" t-if="widget.flags.display_title !== false">
+                            <span class="oe_view_title_text oe_breadcrumb_title"/>
+                        </h2>
+                </td>
+                <td colspan="2">
+                        <div class="oe_view_manager_view_search" t-opentag="true"/>
+                </td>
+            </tr>
+            <tr class="oe_header_row">
+                <td>
+                        <div class="oe_view_manager_buttons"/>
+                </td>
+                <td colspan="2">
+                        <div class="oe_view_manager_sidebar"/>
+                </td>
+                <td>
+                    <ul class="oe_view_manager_switch oe_button_group oe_right">
+                        <t t-if="widget.views_src.length > 1" t-foreach="widget.views_src" t-as="view">
+                          <li class="oe_e">
+                            <a t-attf-class="oe_vm_switch_#{view.view_type}" t-att-data-view-type="view.view_type"
+                               t-att-title="view.button_label"/>
+                          </li>
+                        </t>
+                    </ul>
+                    <div class="oe_view_manager_pager oe_right"/>
+                </td>
+            </tr>
+        </table>
+
+        <div class="oe_view_manager_body">
+            <t t-foreach="widget.views_src" t-as="view">
+                <div t-attf-class="oe_view_manager_view_#{view.view_type}"/>
+            </t>
+        </div>
+    </div>
+</t>
+<t t-name="DSAFormView">
+    <div class="oe_formview">
+        <div class="oe_form_buttons"/>
+        <div class="oe_form_sidebar"/>
+        <div class="oe_form_pager"/>
+        <div class="oe_form_container"/>
+    </div>
+</t>
+<t t-name="One2ManyENDO.viewmanager" t-extend="ViewManager">
+    <t t-jquery=".oe-view-manager-header">
+        this.attr('t-if', 'views.length != 1');
+    </t>
+</t>
+<t t-name="One2ManyENDO.formview" t-extend="DSAFormView">
+    <t t-jquery=".oe_form_buttons" t-operation="inner">
+        <button type="button" class="oe_button oe_form_button_create">Add</button>
+    </t>
+</t>
+<t t-name="One2ManyENDO.listview" t-extend="EndoListView">
+    <t t-jquery="thead.ui-widget-header > tr:first">
+        this.removeAttr('t-if');
+    </t>
+    <t t-jquery="td.oe-actions">
+        this.removeAttr('t-if');
+    </t>
+    <t t-jquery="td.oe-actions" t-operation="prepend">
+        <h3 class="oe_view_title"><t t-esc="fields_view.arch.attrs.string"/></h3>
+    </t>
+</t>
+
+</templates>
+
+   

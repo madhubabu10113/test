@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+       
+ <!-- Tempalate for acknowledge email -->       
+ <record id="email_template_support_acknowledge_mail" model="email.template">
+            <field name="name">Support Tickets - Acknowledge E-mail</field>
+            <field name="email_from">${object.company_id.email or 'noreply@endosoft'}</field>
+            <field name="email_to">${object.email_from}</field>
+            <field name="subject">${object.name}</field>
+            <field name="email_recipients">${object.partner_id.id}</field>
+            <field name="model_id" ref="model_crm_claim"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+	% if object.partner_id:
+        <p>Dear ${object.partner_id.name},</p>
+    % endif
+    % if not object.partner_id:
+        <p>Dear Customer,</p>
+    % endif
+    <p style="margin-left: 30px;">
+        
+    Thank you for contacting EndoSoft Technical Support. We have received your email request for product assistance and it has been converted into a service desk ticket <strong>${object.x_tick_id}</strong>. We will notify you after we have reviewed your ticket. 
+   % if object.user_id:
+If you have any additional questions or information regarding this particular issue, you may reply to support engineer. 
+       &nbsp;&nbsp;Your contact: <a href="mailto:${object.user_id.email or ''}?subject=Ticket%20${object.x_tick_id}">${object.user_id.name}</a>
+       % endif
+    </p>  
+  <% set signup_url = object.get_signup_url() %>
+    % if signup_url:
+    <p style="margin-left: 30px;">
+    You can access the support ticket on our Customer Portal:
+    </p>
+        <a style="display:block; width: 150px; height:20px; margin-left: 120px; color: #DDD; font-family: 'Lucida Grande', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; text-align: center; text-decoration: none !important; line-height: 1; padding: 5px 0px 0px 0px; background-color: #0B0B61; border-radius: 5px 5px; background-repeat: repeat no-repeat;"
+           href="${signup_url}">View Support Ticket</a>
+    % endif
+
+If your issue is of an urgent nature, for the fastest service, please call technical support at 1‐866‐ENDOSOFT ext.2 during business hours.
+<br/>
+Thank you for contacting Technical Support. 
+<br/>
+EndoSoft Technical Support 
+</p>  
+    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #0B0B61; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+    </div>
+    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+        <span style="color: #222; margin-bottom: 5px; display: block; ">
+        % if object.company_id.street:
+            ${object.company_id.street}<br/>
+        % endif
+        % if object.company_id.street2:
+            ${object.company_id.street2}<br/>
+        % endif
+        % if object.company_id.city or object.company_id.zip:
+            ${object.company_id.zip} ${object.company_id.city}<br/>
+        % endif
+        % if object.company_id.country_id:
+            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br/>
+        % endif
+        </span>
+        % if object.company_id.phone:
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                Phone:&nbsp; ${object.company_id.phone}
+            </div>
+        % endif
+        % if object.company_id.website:
+            <div>
+                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+            </div>
+        %endif
+        <p></p>
+    </div>
+</div>
+            ]]></field>
+        </record>
+
+
+<!-- Tempalate for alert email -->
+
+	<record id="email_template_support_ticket_alert_mail" model="email.template">
+            <field name="name">Support Tickets - Send Alert Emails</field>
+            <field name="email_from">${object.company_id.email or 'noreply@localhost'}</field>
+            <field name="email_to">${object.user_id.email}</field>
+            <field name="subject">${object.name}</field>
+            <field name="email_recipients">${object.partner_id.id}</field>
+            <field name="model_id" ref="model_crm_claim"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+	% if object.user_id:
+    	<p>Hello Manager/${object.user_id.name},</p>
+	% endif
+    % if not object.user_id:
+    	<p>Hello Manager,</p>
+	% endif
+    <p>The support ticket (${object.x_tick_id}) is waiting to be resolved. </p>
+    
+    <p style="border-left: 1px solid #0B0B61; margin-left: 30px;">
+       &nbsp;&nbsp;<strong>REFERENCES</strong><br />
+       &nbsp;&nbsp;Ticket number: <strong>${object.x_tick_id}</strong><br />
+       &nbsp;&nbsp;Ticket title: <strong>${object.name}</strong><br />
+       &nbsp;&nbsp;Ticket creation date: ${object.create_date}<br />
+       &nbsp;&nbsp;Ticket Priority: ${object.priority.name}<br />
+       % if object.date_deadline:
+    		&nbsp;&nbsp;Ticket Deadline: <strong>${object.date_deadline}</strong><br />
+       % endif
+    </p>  
+    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #0B0B61; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+    </div>
+    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+        <span style="color: #222; margin-bottom: 5px; display: block; ">
+        % if object.company_id.street:
+            ${object.company_id.street}<br/>
+        % endif
+        % if object.company_id.street2:
+            ${object.company_id.street2}<br/>
+        % endif
+        % if object.company_id.city or object.company_id.zip:
+            ${object.company_id.zip} ${object.company_id.city}<br/>
+        % endif
+        % if object.company_id.country_id:
+            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br/>
+        % endif
+        </span>
+        % if object.company_id.phone:
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                Phone:&nbsp; ${object.company_id.phone}
+            </div>
+        % endif
+        % if object.company_id.website:
+            <div>
+                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+            </div>
+        %endif
+        <p></p>
+    </div>
+</div>
+            ]]></field>
+        </record>
+        
+<!-- EMAIL TEMPLATE FOR RESPONSE TO CUSTOMER WHNE TICKET IS SETTLED -->
+ <record id="email_template_support_closed_mail" model="email.template">
+            <field name="name">Support Tickets - Response E-mail</field>
+            <field name="email_from">${object.company_id.email or 'noreply@endosoft'}</field>
+            <field name="email_to">${object.email_from}</field>
+            <field name="subject">${object.name}</field>
+            <field name="email_recipients">${object.partner_id.id}</field>
+            <field name="model_id" ref="model_crm_claim"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+	% if object.partner_id:
+        <p>Dear ${object.partner_id.name},</p>
+    % endif
+    % if not object.partner_id:
+        <p>Dear Customer,</p>
+    % endif
+    <p style="margin-left: 30px;">
+    Thank you for contacting EndoSoft recently for the issue <strong>${object.name}</strong>
+tracked on ticket <strong>${object.x_tick_id}</strong>. 
+
+We have worked to resolve this issue and believe the issue is solved. Here was the solution found: <strong>${object.resolution}</strong>. 
+ 
+   % if object.user_id:
+If you have any additional questions or information and confirm that this issue is resolved to your satisfaction or if you are still experiencing this issue, you may reply to support engineer. 
+       &nbsp;&nbsp;Your contact: <a href="mailto:${object.user_id.email or ''}?subject=Ticket%20${object.x_tick_id}">${object.user_id.name}</a>
+       % endif
+    
+  If we don’t hear back from you within a few days, this ticket will automatically close out. However, if you need any further assistance, we will gladly reopen this ticket at any time and work with you further.
+    <br/>
+   <% set signup_url = object.get_signup_url() %>
+    % if signup_url:
+    <p style="margin-left: 30px;">
+    You can access the support ticket on our Customer Portal:
+    </p>
+        <a style="display:block; width: 150px; height:20px; margin-left: 120px; color: #DDD; font-family: 'Lucida Grande', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; text-align: center; text-decoration: none !important; line-height: 1; padding: 5px 0px 0px 0px; background-color: #0B0B61; border-radius: 5px 5px; background-repeat: repeat no-repeat;"
+           href="${signup_url}">View Support Ticket</a>
+    % endif 
+</p>  
+            <br/>
+ % if object.user_id:
+Sincerely,
+<br/>
+${object.user_id.name}.
+<br/>
+  % endif
+EndoSoft Technical Support
+<br/><br/>
+</p>  
+    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #0B0B61; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+    </div>
+    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+        <span style="color: #222; margin-bottom: 5px; display: block; ">
+        % if object.company_id.street:
+            ${object.company_id.street}<br/>
+        % endif
+        % if object.company_id.street2:
+            ${object.company_id.street2}<br/>
+        % endif
+        % if object.company_id.city or object.company_id.zip:
+            ${object.company_id.zip} ${object.company_id.city}<br/>
+        % endif
+        % if object.company_id.country_id:
+            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br/>
+        % endif
+        </span>
+        % if object.company_id.phone:
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                Phone:&nbsp; ${object.company_id.phone}
+            </div>
+        % endif
+        % if object.company_id.website:
+            <div>
+                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+            </div>
+        %endif
+        <p></p>
+    </div>
+</div>
+            ]]></field>
+     </record>
+
+
+
+    </data>
+    
+	<data noupdate="1">
+    <!--
+        Ticket priorities
+        -->
+        
+         <record model="crm.ticket.priority" id="crm_pri_high">
+            <field name="name">High</field>
+            <field name="interval_number">1</field>
+            <field name="numberemail">3</field>
+            <field name="desc">High Priority</field>
+        </record>
+        
+		<record model="crm.ticket.priority" id="crm_pri_normal">
+            <field name="name">Normal</field>
+            <field name="default" eval="'True'"/>
+            <field name="interval_number">6</field>
+            <field name="interval_type" eval="'hours'"></field>
+            <field name="numberemail">3</field>
+            <field name="desc">Normal Priority</field>
+        </record>
+        
+		<record model="crm.ticket.priority" id="crm_pri_low">
+            <field name="name">Low</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type" eval="'days'"></field>
+            <field name="numberemail">3</field>
+            <field name="desc">Low Priority</field>
+        </record>
+       </data>
+ 
+      
+ 
+		<!-- Cron for alert emails to user -->
+		 <!--record forcecreate="True" id="ir_cron_alertmail_action" model="ir.cron">
+            <field name="name">Send Email to user</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">5</field>
+            <field eval="False" name="doall"/>
+            <field eval="'crm.claim'" name="model"/>
+            <field eval="'_run_alertmail'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record-->
+
+        <!-- automatic mail send on priority basis -->
+        <!--record id="filter_priority_ticket" model="ir.filters">
+            <field name="name">High priority tickets</field>
+            <field name="model_id">crm.claim</field>
+            <field name="domain">[('stage_id','in',['draft','open']),('priority','=',1)]</field>
+            <field name="user_id" eval="False"/>
+        </record-->
+        <!--record id="action_email_acknowledge_ticket" model="ir.actions.server">
+            <field name="name">Acknowledge to customer on new Ticket</field>
+            <field name="model_id" ref="model_crm_claim"/>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">email</field>
+            <field name="email">object.email_from</field>
+            <field name="subject">Complaint Received</field>
+            <field name="message">Your complaint is recieved.
+Please save this id for future reference.
+[[ object.x_tick_id ]]-->
+            <!--/field-->
+        <!--/record-->
+        <!--record id="rule_set_reminder_ticket" model="base.action.rule">
+            <field name="name">Set Auto Reminder on high risk tickets which are not open.</field>
+            <field name="model_id" ref="model_crm_claim"/>
+            <field name="sequence">1</field>
+            <field name="filter_id" ref="filter_priority_ticket"/>
+            <field name="trg_date_id" ref="crm_claim.field_crm_claim_create_date"/>
+            <field name="trg_date_range">2</field>
+            <field name="trg_date_range_type">minutes</field>
+            <field name="server_action_ids" eval="[(6,0,[ref('action_email_reminder_ticket')])]"/>
+        </record-->
+    <!--/data>
+    <data noupdate="1"-->
+
+        <!--Definition of an email template with an empty body that will be used. Used to give a
+            basis for email recipients, name and to ease the definition of a further elaborated template. -->
+        <!--record id="email_template_support_ticket_mail" model="email.template">
+            <field name="name">Support Tickets - Send Alert Emails</field>
+            <field name="subject">${object.name}</field>
+            <field name="model_id" ref="model_crm_claim"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="email_recipients">${object.partner_id.id}</field>
+            <field name="body_html"></field> 
+        </record-->
+</openerp>

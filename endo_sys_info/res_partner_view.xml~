@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record id="res_partner_sys_info" model="ir.ui.view">
+        <field name="name">res.partner.sys.info</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+      
+         <xpath expr="//label[@string='Is a Company?']" position="after">
+              <field name="x_location" class="oe_inline" attrs="{'invisible': [('customer','=', False)]}" on_change="onchange_type_location(x_location)"/> 
+
+<label for="x_location" string="Is a Location?" attrs="{'invisible': [('customer','=', False)]}"  />
+      </xpath>
+            <field name="website" position="after">
+            <field name="x_department" placeholder="e.g. account department" attrs="{'invisible': [('is_company','=', True),('parent_id', '=', False)]}"/>
+            <field name="x_location_name" placeholder="Location" attrs="{'invisible': [('is_company','=', True),('parent_id', '=', False)]}"/>
+            </field>
+            <field name="phone" position="after">
+                <field name="x_work_phone" placeholder="e.g. +32.81.81.37.00"/>
+                <field name="x_other_phone" placeholder="e.g. +32.81.81.37.00"/>
+            </field>
+            <field name="title" position="replace">
+                <field name="supdate" attrs="{'required': ['|',('is_company','=', True),('x_location','=',True),('customer','=', True)] ,'invisible': [('customer','=', False),('is_company','=',False)]}"/>
+            </field>
+            <field name="category_id" position="after">
+                    <field name="title" domain="[('domain', '=', 'contact')]" placeholder="Title"
+                                options='{"no_open": True}' attrs="{'invisible': ['|',('is_company','=', True),('x_location','=',True)]}" />
+            </field>
+
+<xpath expr="//notebook/page[@string='Internal Notes']" position="before">
+                
+
+<page string="System Information"  attrs="{'invisible': [('customer','=', False),('is_company','=',False)],'invisible':[('x_location','=',False),('is_company','=',False)]}">                  
+
+<group>
+                    <group col="6" colspan="2" string="System details">
+                            <field name="db_server" attrs="{'readonly': [('is_company','=', False)]}" context="{'db_server':db_server}" />
+                            <field name="pacs" attrs="{'readonly': [('is_company','=', False)]}" context="{'pacs':pacs}"/>
+                            <field name="sitelic" attrs="{'readonly': [('is_company','=', False)]}" context="{'sitelic':sitelic}"/>
+                            <field name="remote_conn" attrs="{'invisible': [('is_company','=', True)]}"/>
+                    </group>
+
+         <notebook colspan="4">
+            <page string="Locations" attrs="{'invisible': [('is_company','=', False)]}">
+                 <field name="location_lines" widget="one2many" nolabel="1" >
+                    <tree editable="bottom">
+                        <field name="name" context="{'default_x_location':True,'default_parent_id':parent.id}"/>
+                        <button name="view_location" icon="gtk-justify-fill"
+                            string="View Location Details"
+                            type="object" class="oe_read_only"/>
+                     </tree>
+                </field>
+             </page>
+             <page string="System Installed">
+                  <field name="system_installed"  widget="one2many_tags" attrs="{'readonly': [('is_company','=', False)]}"/>
+             </page>
+
+              <page string="Hospital Information System">
+                   <field name="his"  widget="one2many_tags" attrs="{'readonly': [('is_company','=', False)]}"/>
+              </page>
+
+              <page string="Interfaces" attrs="{'invisible': [('is_company','=', False)]}">
+                    <field name="interfacs_lines" widget="one2many" nolabel="1">
+                      <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="his_id"/>
+                            <field name="listening_ip"/>
+                            <field name="sending_ip"/>
+                            <field name="comments"/>
+                      </tree>
+                    </field>
+              </page>
+              <page string="DICOM" attrs="{'invisible': [('is_company','=', False)]}">
+                     <field name="dicom_lines" widget="one2many" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="node"/>
+                            <field name="port_no"/>
+                            <field name="calling_ae"/>
+                            <field name="called_ae"/>
+                            <field name="comments"/>
+                        </tree>
+                    </field>
+            </page>
+
+             <page string="Over View" attrs="{'invisible': [('is_company','=', False)]}">
+                    <field name="summery_line" invisible="1"/>
+                    <field name="summery_lines" widget="one2many" nolabel="1">
+                        <tree colors="blue:deactive == True ;red:support_end &lt; current_date" >
+                                <field name="location_id"/>
+                                <field name="room_id"/>
+                                <field name="licensce"/>
+                                <field name="comp_name"/>
+                                <field name="exe_version"/>
+                                <field name="installed_date"/>
+                                <field name="support_end"/>
+                                <field name="deactive"/>
+                            </tree>
+                            <form string="Products">
+                                <group>
+                                    <group>
+                                        <div>
+                                            <field name="location_id"/>
+                                            <field name="room_id"/>
+                                            <field name="installed_date"/>
+                                            <field name="support_end"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div>
+                                            <field name="comp_name"/>
+                                            <field name="licensce"/>
+                                            <field name="exe_version"/>
+                                            <field name="deactive"/>
+                                        </div>
+                                    </group>
+                                    <field name="comments"/>
+                                </group>
+                            </form>
+                        </field>
+                </page>
+
+</notebook>
+                    <group col="6" colspan="2" string="Rooms" attrs="{'invisible': [('is_company','=', True)]}">
+                    <field name="room_lines" nolabel="1" widget="twotomany">
+                        <form string="Room">
+
+                         <group>
+                             <group>
+                               <field name="name"/>
+                              <field name="remote_conn_room" placeholder="Put Remote connection details here..."  colspan="4" />
+                            </group>
+                         </group>
+
+                        <group col="6" colspan="2" string="Speciality" >
+                        <field name="licensce_lines" widget="one2many"  nolabel="1">
+                                <tree string="License" editable="bottom" colors="grey:deactive==True">
+                                    <field name="name"/>
+                                    <field name="exe_version"/>
+                                    <field name="comp_name"/>
+                                    <field name="installed_date"/>
+                                     <field name="support_start"/>
+                                    <field name="support_end"/>
+                                    <field name="comments"/>
+                                    <field name="deactive"/>
+                                </tree>
+                        </field>
+                        </group>
+                        <group col="6" colspan="2" string="Cables" >
+                            <field name="cableing_lines" widget="one2many" nolabel="1">
+                            <tree string="Cables" editable="bottom">
+                                <field name="name"/>
+                                <field name="serial_num"/>
+                                <field name="cable_length"/>
+                                <field name="installed_date"/>
+                                <field name="comments"/>
+                            </tree>
+                            </field>
+                        </group>
+                        <group col="6" colspan="2" string="Custom Cabling" >
+                            <field name="cust_cable_lines" widget="one2many" nolabel="1">
+                            <tree string="Custom Cables" editable="bottom">
+                                <field name="name"/>
+                                <field name="length"/>
+                                <field name="communication"/>
+                                <field name="comments"/>
+                            </tree>
+                            </field>
+                        </group>
+                          <group col="6" colspan="2" string="Video Processors" >
+                            <field name="video_process_lines" widget="one2many" nolabel="1">
+                            <tree string="Video Processors" editable="bottom">
+                                <field name="name"/>
+                                <field name="type_id"/>
+                                <field name="comm_id"/>
+                                <field name="comments"/>
+                            </tree>
+                            </field>
+                        </group>
+                        <group col="6" colspan="2" string="Other Equipment" >
+                            <field name="other_equp_lines" widget="one2many" nolabel="1">
+                            <tree string="Other Equipment" editable="bottom">
+                                <field name="name"/>
+                                <field name="type_id"/>
+                                <field name="comm_id"/>
+                                <field name="comments"/>
+                            </tree>
+                            </field>
+                        </group>
+                       <group col="6" colspan="2" string="Additional Notes">
+                         <field name="notes" placeholder="Put additional notes on the room.."/>
+                       </group>
+
+
+</form>
+                        <tree>
+                            <field name="name"/>
+                        </tree>
+</field>
+</group>
+               <group col="6" colspan="2" string="Additional information">
+                     <field name="additional_notes" placeholder="Put Additional notes here..." nolabel="1"/>
+               </group>
+</group>
+
+</page>
+</xpath>
+    </field>
+ </record>
+
+
+     <record id="sys_info_view_res_partner_filter" model="ir.ui.view">
+            <field name="name">res.partner.sys.info.select</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <filter name="supplier" position="after">
+                        <filter string="Location" name="x_location" domain="[('x_location','=',1)]" help="Location Partners"/>
+                </filter>
+        
+            </field>
+    </record>
+
+
+     <record id="sys_info_view_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.sys.info.tree</field>
+        <field name="model">res.partner</field>
+        <field eval="8" name="priority"/>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <field name="email" position="replace"/>
+            <field name="function"  position="replace">
+                <field name="x_location_name"/>
+                <field name="x_department"/>
+                <field name='function'/>
+            </field>
+        
+        </field>
+    </record>	
+ 
+
+    </data>
+</openerp>

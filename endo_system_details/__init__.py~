@@ -1,0 +1,4 @@
+# -*- coding: utf-8 -*-
+import sys_info
+import res_partner
+

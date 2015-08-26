@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+	<record id="endo_quotation_inherit_tree_view" model="ir.ui.view">
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_quotation_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="after">
+				<field name="client_order_ref"/>
+			</xpath>
+		</field>
+	</record>
+</data> 
+</openerp>

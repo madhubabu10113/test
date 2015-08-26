@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+<!--    Database Server Licenses -->
+        <record id="db_server_licenses_form" model="ir.ui.view">
+            <field name="name">db.server.licenses.form</field>
+            <field name="model">db.server.licenses</field>
+            <field name="arch" type="xml">
+                <form string="Database Server License" version="7.0">
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+
+            
+            <label for="description" class="oe_edit_only"/>
+            <field name="description" placeholder="Description about the License...."/>
+                </sheet>
+                </form>
+           </field>
+        </record>
+    
+        <record id="db_server_licenses_tree" model="ir.ui.view">
+            <field name="name">db.server.licenses.tree</field>
+            <field name="model">db.server.licenses</field>
+            <field name="arch" type="xml">
+                <tree string="Database Server License">
+                    <field name="name"/>
+                </tree>
+           </field>
+        </record>
+
+       <record id="action_db_server_licenses" model="ir.actions.act_window">
+            <field name="name">Database Server License</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">db.server.licenses</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Database Server License.
+              </p>
+            </field>
+        </record>
+<!--          -->
+<!--    IB Version -->
+        <record id="ib_version_form" model="ir.ui.view">
+            <field name="name">ib.version.form</field>
+            <field name="model">ib.version</field>
+            <field name="arch" type="xml">
+                <form string="IB Version" version="7.0">
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+
+            
+            <label for="description" class="oe_edit_only"/>
+            <field name="description" placeholder="Description about the IB Version...."/>
+                </sheet>
+                </form>
+           </field>
+        </record>
+    
+        <record id="ib_version_tree" model="ir.ui.view">
+            <field name="name">ib.version.tree</field>
+            <field name="model">ib.version</field>
+            <field name="arch" type="xml">
+                <tree string="IB Version">
+                    <field name="name"/>
+                </tree>
+           </field>
+        </record>
+
+       <record id="action_ib_version" model="ir.actions.act_window">
+            <field name="name">Database Server License</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ib.version</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new IB Version.
+              </p>
+            </field>
+        </record>
+<!--          -->
+
+
+       <record id="view_pjt_license_inherit" model="ir.ui.view">
+            <field name="name">project.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+
+            <field name="user_id" position="after">
+                <field name="partner_cust_id" string="Customer Project Manager" domain="[('parent_id','=',partner_id),('parent_id','!=',False)]" attrs="{'readonly':[('state','in',['close', 'cancelled'])]}"/>
+                <field name="prjct_lead_id" attrs="{'readonly':[('state','in',['close', 'cancelled'])]}"/>
+            </field>
+
+            <page string="Team" position="after">
+                <page string="Description &amp; Licensing"> 
+                    <group>
+                        <group>
+                    <field name="db_server_id"/>
+                    <field name="ib_royality"/>
+                        </group>
+                    
+                        <group>
+                    <field name="ib_version_id"/>
+                    <field name="no_of_lice"/>
+                        </group>
+
+                    </group>
+                    <field name="project_desc" attrs="{'readonly':[('state','=','done')]}" placeholder="Add a Description..."/>
+                </page>
+            </page>
+        <field name="project_desc" position="replace">
+            <field name="project_desc_pad"  attrs="{'readonly':[('state','=','done')]}" widget="pad"/>
+        </field>
+
+        <page string="Team" name="team" position="replace">
+            <page string="Team" name="team">
+             <field colspan="4" name="members">
+                <tree>
+                   <field name="name"/>
+                   <field name="phone"/>
+                    <field name="email"/>
+                    <field name="function"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+    <group string="Customer Contacts">
+    <field name="contacts" domain="[('parent_id','=',partner_id)]" nolabel="1">
+            <tree>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="function"/>
+            </tree>
+    </field>
+   </group>
+            </page>
+        </page>
+
+           </field>
+        </record>
+
+
+<!--Project Task Inherit-->
+        <record id="view_task_inher_form2" model="ir.ui.view">
+            <field name="name">project.task.form.inher</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <field name="planned_hours" position="after">
+                    <field name="wbs_id"/>
+                </field>    
+
+        <xpath expr="//page[@string='Extra Info']" position="inside">
+            <group col="4" string='Risk'>
+               <field name="is_risk"/>
+              <field name="risk_probability"/>
+            </group>
+        </xpath>
+
+            </field>
+        </record>
+
+
+  <menuitem id="base.menu_project_config_project_db_Server" action="action_db_server_licenses" name="Database Server License" parent="base.menu_definitions" sequence="5" groups="base.group_no_one"/>
+
+  <menuitem id="base.menu_project_config_project_ib_version" action="action_ib_version" name="IB Version" parent="base.menu_definitions" sequence="5" groups="base.group_no_one"/>
+
+    </data>
+</openerp>

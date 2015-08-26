@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="1">
+<!-- multi -->
+    <record model="ir.rule" id="incoming_server_comp_rule">
+        <field name="name">Incoming server multi-company</field>
+        <field name="model_id" ref="model_fetchmail_server"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+
+</data>
+</openerp>

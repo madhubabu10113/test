@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+<!--    System Installed-->
+      <record id="endosoft_id" model="sys.installed">
+            <field name="name">Endosoft</field>
+      </record>
+      <record id="endovault_id" model="sys.installed">
+            <field name="name">Endovault</field>
+      </record>
+
+<!--Database Server-->
+      <record id="interbase71_id" model="sys.info.db">
+            <field name="name">Interbase 7.1</field>
+      </record>
+      <record id="interbase75_id" model="sys.info.db">
+            <field name="name">Interbase 7.5</field>
+      </record>
+
+
+<!--Interfaces -->
+      <record id="hl7_adt_id" model="sys.interfaces">
+            <field name="name">HL7 ADT</field>
+      </record>
+      <record id="hl7_orm_id" model="sys.interfaces">
+            <field name="name">HL7 ORM</field>
+      </record>
+      <record id="hl7_oru_id" model="sys.interfaces">
+            <field name="name">HL7 ORU</field>
+      </record>
+    <record id="hl7_siu_id" model="sys.interfaces">
+            <field name="name">HL7 SIU</field>
+      </record>
+
+<!--Speciality-->
+      <record id="gastro_id" model="sys.speciality">
+        <field name="name">Gastro</field>
+      </record>
+      <record id="urology_id" model="sys.speciality">
+            <field name="name">Urology</field>
+      </record>
+      <record id="pulmo_id" model="sys.speciality">
+            <field name="name">Pulmonology</field>
+      </record>
+    <record id="gyneacology_id" model="sys.speciality">
+            <field name="name">Gyneacology</field>
+      </record>
+
+
+
+    </data>
+</openerp>

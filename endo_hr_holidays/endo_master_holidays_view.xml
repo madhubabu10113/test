@@ -1,0 +1,80 @@
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="master_holiday_new">
+            <field name="name">Annual Holidays Form</field>
+            <field name="model">endo.hr.master.holidays</field>
+            <field name="arch" type="xml">
+                <form string="Annual Holidays" version="7.0">
+		    <sheet>
+			<group col="5">
+			    <group col="2">
+			    <field name="pid" />
+			    </group>
+			    <group col="3">
+			    <field name="name" />
+			    </group>
+			</group>
+			<group col="3">
+			    <field name="leaves" nolabel="1"/>
+			</group>
+		    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_master_holiday_tree">
+            <field name="name">Annual Holidays Tree</field>
+            <field name="model">endo.hr.master.holidays</field>
+            <field name="arch" type="xml">
+                <tree string="Annual Holidays">
+                    <field name="pid" />
+        	    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+	<record model="ir.actions.act_window" id="endosoft_holidays">
+            <field name="name">Annual Holidays</field>
+            <field name="res_model">endo.hr.master.holidays</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+	    <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Annual holidays.
+              </p>
+            </field>
+        </record>
+
+        <menuitem name="Annual Leaves" parent="hr.menu_hr_configuration" id="menu_endosoft_holidays" action="endosoft_holidays" sequence="20"/>
+
+
+	<record model="ir.ui.view" id="view_child_endo_holiday_form">
+            <field name="name">Child Endosoft Holidays Form</field>
+            <field name="model">child.endoleaves</field>
+            <field name="arch" type="xml">
+                <form string="Child Endosoft Holidays" version="7.0">
+		    <sheet>
+			<group col="4">
+			    <field name="name" />
+			    <field name="leave_date" />
+			</group>
+		    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_child_endo_holiday_tree">
+            <field name="name">Child Endosoft Holidays Tree</field>
+            <field name="model">child.endoleaves</field>
+            <field name="arch" type="xml">
+                <tree string="Child Endosoft Holidays" editable="bottom">
+                    <field name="name" />
+        	    <field name="leave_date" />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

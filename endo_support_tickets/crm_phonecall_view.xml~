@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+		<record id="view_normal_phonecall_toclaim_form" model="ir.ui.view">
+            <field name="name">CRM - Phone Call Form</field>
+            <field name="model">crm.phonecall</field>
+            <field name="inherit_id" ref="crm.crm_case_phone_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div[@class='oe_right oe_button_box']" position="inside">
+                    	<!-- Code changes for button to convert to claims .....Madhubabu Endosoft -->
+		<field name="claim_id" invisible="1"/>
+
+                        <button class="oe_inline oe_stat_button" type="object" name="action_button_convert2claim" 
+                            icon="fa-star" attrs="{'invisible':[ '|', ('claim_id','!=',False),('state', 'not in', ('open', 'done'))]}"
+                            help="Convert To Opportunity" widget="statusbar">
+                            <div>Convert To<br/>Support-ticket</div>
+                        </button>					
+			
+                </xpath>
+				
+            </field>
+        </record>
+<!-- Menu item in messaging Endosoft-->
+	<menuitem name="Phone Calls"
+        id="menu_crm_case_phone_msg" parent="mail.mail_my_stuff"
+        sequence="2" action="crm.crm_case_categ_phone_incoming0"/>
+
+    </data>
+</openerp>
